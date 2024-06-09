@@ -1,3 +1,24 @@
+//! # CryptGuard Lite
+//!
+//! [![Crates.io][crates-badge]][crates-url]
+//! [![MIT licensed][mit-badge]][mit-url]
+//! [![Documentation][doc-badge]][doc-url]
+//! [![Hashnode Blog][blog-badge]][blog-url]
+//! [![GitHub Library][lib-badge]][lib-link]
+//!
+//! [blog-badge]: https://img.shields.io/badge/blog-hashnode-lightblue.svg?style=for-the-badge
+//! [blog-url]: https://blog.mm29942.com/
+//! [crates-badge]: https://img.shields.io/badge/crates.io-v0.1-blue.svg?style=for-the-badge
+//! [crates-url]: https://crates.io/crates/crypt_guard_lite
+//! [mit-badge]: https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge
+//! [mit-url]: https://github.com/mm9942/crypt_guard_lite/blob/main/LICENSE
+//! [doc-badge]: https://img.shields.io/badge/docs-v0.1-yellow.svg?style=for-the-badge
+//! [doc-url]: https://docs.rs/crypt_guard_lite/
+//! [lib-badge]: https://img.shields.io/badge/github-crate-black.svg?style=for-the-badge
+//! [lib-link]: https://github.com/mm9942/crypt_guard_lite
+//!
+//! ## Introduction
+//!
 //! CryptGuard Lite is a cryptographic library that provides a generic interface for cryptographic operations, wrapping around the `crypt_guard` crate to offer easy access to its core functionality.
 //!
 //! This library allows seamless interaction with underlying cryptographic operations through provided instances of type `T` (which could be the `Crypto` or `Sign` struct instances).
@@ -6,11 +27,11 @@
 //!
 //! A detached signature is a signature that is separate from the data it signs. This means that the signature is not included within the data itself but is provided separately for verification purposes. In such cases, data is returned upon verification instead of directly modifying and retrieving the signature.
 //!
-//! # Examples
+//! ## Examples
 //!
-//! ## Signing
+//! ### Signing
 //!
-//! ### Dilithium Signing
+//! #### Dilithium Signing
 //! ```
 //! use crypt_guard_lite::{CryptGuard, KeyVariants, Sign};
 //! use crypt_guard::error::SigningErr;
@@ -34,7 +55,7 @@
 //! }
 //! ```
 //!
-//! ### Falcon Detached Signature
+//! #### Falcon Detached Signature
 //! ```
 //! use crypt_guard_lite::{CryptGuard, KeyVariants, Sign};
 //! use crypt_guard::error::SigningErr;
@@ -56,8 +77,8 @@
 //! }
 //! ```
 //!
-//! ## Encryption
-//! ### AES Encryption
+//! ### Encryption
+//! #### AES Encryption
 //! ```
 //! use crypt_guard_lite::{CryptGuard, Crypto};
 //! use crypt_guard::error::CryptError;
@@ -80,7 +101,7 @@
 //! }
 //! ```
 //!
-//! ### XChaCha20 Encryption
+//! #### XChaCha20 Encryption
 //! ```
 //! use crypt_guard_lite::{CryptGuard, Crypto};
 //! use crypt_guard::error::CryptError;

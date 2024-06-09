@@ -1,5 +1,23 @@
 # CryptGuard Lite
 
+[![Crates.io][crates-badge]][crates-url]
+[![MIT licensed][mit-badge]][mit-url]
+[![Documentation][doc-badge]][doc-url]
+[![Hashnode Blog][blog-badge]][blog-url]
+[![GitHub Library][lib-badge]][lib-link]
+
+[blog-badge]: https://img.shields.io/badge/blog-hashnode-lightblue.svg?style=for-the-badge
+[blog-url]: https://blog.mm29942.com/
+[crates-badge]: https://img.shields.io/badge/crates.io-v0.1-blue.svg?style=for-the-badge
+[crates-url]: https://crates.io/crates/crypt_guard_lite
+[mit-badge]: https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge
+[mit-url]: https://github.com/mm9942/crypt_guard_lite/blob/main/LICENSE
+[doc-badge]: https://img.shields.io/badge/docs-v0.1-yellow.svg?style=for-the-badge
+[doc-url]: https://docs.rs/crypt_guard_lite/
+[lib-badge]: https://img.shields.io/badge/github-crate-black.svg?style=for-the-badge
+[lib-link]: https://github.com/mm9942/crypt_guard_lite
+
+
 ## Overview
 
 **CryptGuard Lite** is a compact and intuitive library that wraps the `crypt_guard` crate, making its core functionalities easily accessible and manageable. This library provides essential cryptographic operations, including key generation, encryption, decryption, and digital signing, with support for multiple key variants such as Falcon and Dilithium. Its streamlined interface ensures a straightforward integration into your projects, offering robust security mechanisms with minimal complexity.
@@ -18,7 +36,7 @@ Add the following to your `Cargo.toml`:
 ```toml
 [dependencies]
 crypt_guard = "1.2.10"
-cryptguard_minimal = "0.1.0"
+crypt_guard_lite = "0.2.0"
 ```
 
 ## Usage
