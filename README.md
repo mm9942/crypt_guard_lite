@@ -8,11 +8,11 @@
 
 [blog-badge]: https://img.shields.io/badge/blog-hashnode-lightblue.svg?style=for-the-badge
 [blog-url]: https://blog.mm29942.com/
-[crates-badge]: https://img.shields.io/badge/crates.io-v0.1-blue.svg?style=for-the-badge
+[crates-badge]: https://img.shields.io/badge/crates.io-v0.2.X-blue.svg?style=for-the-badge
 [crates-url]: https://crates.io/crates/crypt_guard_lite
 [mit-badge]: https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge
 [mit-url]: https://github.com/mm9942/crypt_guard_lite/blob/main/LICENSE
-[doc-badge]: https://img.shields.io/badge/docs-v0.1-yellow.svg?style=for-the-badge
+[doc-badge]: https://img.shields.io/badge/docs-v0.2.X-yellow.svg?style=for-the-badge
 [doc-url]: https://docs.rs/crypt_guard_lite/
 [lib-badge]: https://img.shields.io/badge/github-crate-black.svg?style=for-the-badge
 [lib-link]: https://github.com/mm9942/crypt_guard_lite
@@ -36,7 +36,7 @@ Add the following to your `Cargo.toml`:
 ```toml
 [dependencies]
 crypt_guard = "1.2.10"
-crypt_guard_lite = "0.2.0"
+crypt_guard_lite = "0.2.1"
 ```
 
 ## Usage
@@ -115,15 +115,3 @@ assert_eq!(data, decrypted_data);
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-```
-
-### Additional Notes
-
-- The library depends on `crypt_guard` version `1.2.10`.
-- Make sure to handle errors appropriately when integrating the library into your projects.
-
-For more detailed usage examples and API documentation, please refer to the official `crypt_guard` crate documentation and the library's source code.
-
-Happy coding!
-```
