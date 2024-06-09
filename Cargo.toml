@@ -1,0 +1,9 @@
+[package]
+name = "crypt_guard_lite"
+version = "0.1.0"
+edition = "2021"
+description = "A compact and intuitive library that wraps the crypt_guard crate, making its core functionalities easily accessible and manageable. This library provides essential cryptographic operations, including key generation, encryption, decryption, and digital signing, with support for multiple key variants such as Falcon and Dilithium. Its streamlined interface ensures a straightforward integration into your projects, offering robust security mechanisms with minimal complexity."
+license = "MIT"
+
+[dependencies]
+crypt_guard = "1.2.10"
