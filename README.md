@@ -17,7 +17,6 @@
 [lib-badge]: https://img.shields.io/badge/github-crate-black.svg?style=for-the-badge
 [lib-link]: https://github.com/mm9942/crypt_guard_lite
 
-
 ## Overview
 
 **CryptGuard Lite** is a compact and intuitive library that wraps the `crypt_guard` crate, making its core functionalities easily accessible and manageable. This library provides essential cryptographic operations, including key generation, encryption, decryption, and digital signing, with support for multiple key variants such as Falcon and Dilithium. Its streamlined interface ensures a straightforward integration into your projects, offering robust security mechanisms with minimal complexity.
@@ -36,7 +35,7 @@ Add the following to your `Cargo.toml`:
 ```toml
 [dependencies]
 crypt_guard = "1.2.10"
-crypt_guard_lite = "0.2.1"
+crypt_guard_lite = "0.2.2"
 ```
 
 ## Usage
@@ -53,29 +52,25 @@ pub enum KeyVariants {
 }
 ```
 
-### Signing
+### Key Generation
 
-#### Creating a Signature
+#### Generating Keys
 
 ```rust
-use crypt_guard::KDF::Signature;
-use crate::KeyVariants::Falcon;
+use crypt_guard_lite::{CryptGuard, KeyVariants, Sign, Crypto};
+use crypt_guard::error::{SigningErr, CryptError};
 
+// Dilithium key pair
+let key_size = 5;
+let (dilithium_public_key, dilithium_secret_key) = Sign::keypair(KeyVariants::Dilithium, key_size).unwrap();
+
+// Falcon key pair
 let key_size = 512;
-let (public_key, secret_key) = Sign::keypair(KeyVariants::Falcon, key_size).unwrap();
+let (falcon_public_key, falcon_secret_key) = Sign::keypair(KeyVariants::Falcon, key_size).unwrap();
 
-let mut guard = CryptGuard::signature(secret_key, KeyVariants::Falcon, key_size);
-
-let data = b"your message".to_vec();
-let signature = guard.signed_data(data.clone()).unwrap();
-```
-
-#### Verifying a Signature
-
-```rust
-let mut guard = CryptGuard::signature(public_key, KeyVariants::Falcon, key_size);
-let verified = guard.verify(data.clone(), signature.clone()).unwrap();
-assert!(verified);
+// Kyber key pair
+let key_size = 1024;
+let (kyber_public_key, kyber_secret_key) = Crypto::keypair(key_size).unwrap();
 ```
 
 ### Encryption
@@ -83,33 +78,99 @@ assert!(verified);
 #### AES Encryption
 
 ```rust
-let key_size = 1024;
-let passphrase = "password".to_string();
-let (secret_key, public_key) = Crypto::keypair(key_size).unwrap();
+use crypt_guard_lite::{CryptGuard, Crypto};
+use crypt_guard::error::CryptError;
 
-let mut guard = CryptGuard::cryptography(secret_key, key_size, passphrase.clone(), None, None);
-let data = b"your data".to_vec();
-let (encrypted_data, cipher) = guard.aencrypt(data.clone()).unwrap();
+pub fn main() -> Result<(), CryptError> {
+    let key_size = 1024;
+    let passphrase = "password".to_string();
+    let (secret_key, public_key) = Crypto::keypair(key_size).unwrap();
 
-let mut guard = CryptGuard::cryptography(public_key, key_size, passphrase.clone(), Some(cipher), None);
-let decrypted_data = guard.adecrypt(encrypted_data.clone()).unwrap();
-assert_eq!(data, decrypted_data);
+    let mut guard = CryptGuard::cryptography(secret_key, key_size, passphrase.clone(), None, None);
+    let data = b"hey, how are you".to_vec();
+    let (encrypted_data, cipher) = guard.aencrypt(data.clone()).unwrap();
+    println!("Encrypted data: {:?}", encrypted_data);
+
+    let mut guard = CryptGuard::cryptography(public_key, key_size, passphrase.clone(), Some(cipher), None);
+    let decrypted_data = guard.adecrypt(encrypted_data.clone()).unwrap();
+    println!("Decrypted data: {:?}", decrypted_data);
+
+    Ok(())
+}
 ```
 
 #### XChaCha20 Encryption
 
 ```rust
-let key_size = 1024;
-let passphrase = "password".to_string();
-let (secret_key, public_key) = Crypto::keypair(key_size).unwrap();
+use crypt_guard_lite::{CryptGuard, Crypto};
+use crypt_guard::error::CryptError;
 
-let mut guard = CryptGuard::cryptography(secret_key, key_size, passphrase.clone(), None, None);
-let data = b"your data".to_vec();
-let (encrypted_data, cipher, nonce) = guard.xencrypt(data.clone()).unwrap();
+pub fn main() -> Result<(), CryptError> {
+    let key_size = 1024;
+    let passphrase = "password".to_string();
+    let (secret_key, public_key) = Crypto::keypair(key_size).unwrap();
 
-let mut guard = CryptGuard::cryptography(public_key, key_size, passphrase.clone(), Some(cipher), Some(nonce.clone()));
-let decrypted_data = guard.xdecrypt(encrypted_data.clone(), nonce).unwrap();
-assert_eq!(data, decrypted_data);
+    let mut guard = CryptGuard::cryptography(secret_key, key_size, passphrase.clone(), None, None);
+    let data = b"hey, how are you".to_vec();
+    let (encrypted_data, cipher, nonce) = guard.xencrypt(data.clone()).unwrap();
+    println!("Encrypted data: {:?}", encrypted_data);
+
+    let mut guard = CryptGuard::cryptography(public_key, key_size, passphrase.clone(), Some(cipher), Some(nonce.clone()));
+    let decrypted_data = guard.xdecrypt(encrypted_data.clone(), nonce).unwrap();
+    println!("Decrypted data: {:?}", decrypted_data);
+
+    Ok(())
+}
+```
+
+### Signing
+
+#### Creating a Signature with Dilithium
+
+```rust
+use crypt_guard_lite::{CryptGuard, KeyVariants, Sign};
+use crypt_guard::error::SigningErr;
+
+pub fn main() -> Result<(), SigningErr> {
+    let key_size = 5;
+    let (public_key, secret_key) = Sign::keypair(KeyVariants::Dilithium, key_size).unwrap();
+    let mut guard = CryptGuard::signature(secret_key, KeyVariants::Dilithium, key_size);
+
+    let data = b"hey, how are you".to_vec();
+    let signing_data = data.clone();
+
+    let signature = guard.signed_data(signing_data.clone())?;
+    println!("Signature: {:?}", signature);
+
+    let mut guard = CryptGuard::signature(public_key, KeyVariants::Dilithium, key_size);
+    let opened_data = guard.open(signature.clone())?;
+    println!("Opened data: {:?}", opened_data);
+
+    Ok(())
+}
+```
+
+#### Creating a Detached Signature with Falcon
+
+```rust
+use crypt_guard_lite::{CryptGuard, KeyVariants, Sign};
+use crypt_guard::error::SigningErr;
+
+pub fn main() -> Result<(), SigningErr> {
+    let key_size = 512;
+    let (public_key, secret_key) = Sign::keypair(KeyVariants::Falcon, key_size).unwrap();
+    let mut guard = CryptGuard::signature(secret_key, KeyVariants::Falcon, key_size);
+
+    let data = vec![1, 2, 3, 4, 5];
+    let signature = guard.detached(data.clone())?;
+    println!("Signature: {:?}", signature);
+
+    let mut guard = CryptGuard::signature(public_key, KeyVariants::Falcon, key_size);
+    let verified = guard.verify(data.clone(), signature.clone())?;
+    println!("Verification: {:?}", verified);
+
+    Ok(())
+}
 ```
 
 ## License
